@@ -1,0 +1,189 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:ListBoxGallery">
+
+
+    <Color x:Key="SelectedBackgroundColor">#FFC5CBF9</Color>
+    <Color x:Key="SelectedUnfocusedColor">#FFDDDDDD</Color>
+
+    <!--<local:ListBoxItemsCustom x:Key="ListBoxItemsCustom"/>-->
+
+<ControlTemplate x:Key="ListBoxItem" TargetType="ListBoxItem">
+        <Border x:Name="Border"
+                Padding="2"
+                SnapsToDevicePixels="true" MaxHeight="250" MaxWidth="250" RenderTransformOrigin="1, 1">
+            <Border.Background>
+                <SolidColorBrush Color="Transparent" />
+            </Border.Background>
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="SelectionStates">
+                    <VisualState x:Name="Unselected" />
+                    <VisualState x:Name="Selected">
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="{Binding Path=ContentPresenter}" Storyboard.TargetProperty="RenderTransform.Angle"
+                                             To="360" Duration="0:0:1" RepeatBehavior="Forever"></DoubleAnimation>
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="SelectedUnfocused">
+                        <Storyboard>
+                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                                          Storyboard.TargetProperty="(Panel.Background).
+                      (SolidColorBrush.Color)">
+                                <EasingColorKeyFrame KeyTime="0"
+                                                     Value="{StaticResource SelectedUnfocusedColor}" />
+                            </ColorAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+            <ContentPresenter/>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                                Storyboard.TargetProperty="(Rectangle.RenderTransform).(RotateTransform.Angle)"
+                                To="180"
+                                Duration="0:0:1"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <!--<ControlTemplate x:Key="ListBoxItem" TargetType="ListBoxItem" >
+        <Border MaxHeight="250" MaxWidth="250" BorderBrush="Gray" BorderThickness="1" Background="White" DataContext="{Binding Source={StaticResource ListBoxItemsCustom}}">
+            <Border.RenderTransform>
+                <RotateTransform Angle="{Binding Path=}"></RotateTransform>
+            </Border.RenderTransform>
+            <Border.RenderTransformOrigin>
+                <Point X="1" Y="1"></Point>
+            </Border.RenderTransformOrigin>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="9*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Image Margin="5" MinWidth="150" MinHeight="150" Source="{Binding Path=ImageItem}" />
+                <Border Grid.Row="1" BorderThickness="1">
+                    <Border.Background>
+                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,1">
+                            <GradientStop Color="#FF3E3E3E" Offset="0"/>
+                            <GradientStop Color="White" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <TextBlock x:Name="TextBlock" FontSize="16" Text="{Binding Path=Title}" HorizontalAlignment="Left" />
+                </Border>
+            </Grid>
+        </Border>
+    </ControlTemplate>-->
+
+    <ControlTemplate x:Key="ListBoxGallery"
+                 TargetType="{x:Type ListBox}">
+        <Border Name="Border"
+                BorderThickness="1"
+                CornerRadius="2">
+            <Border.Background>
+                <SolidColorBrush Color="White" />
+            </Border.Background>
+            <Border.BorderBrush>
+                <SolidColorBrush Color="Transparent" />
+            </Border.BorderBrush>
+            <ScrollViewer Margin="0"
+                          Focusable="false">
+                <Grid Margin="2"
+                            IsItemsHost="True" />
+            </ScrollViewer>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsEnabled"
+                     Value="false">
+                <Setter TargetName="Border"
+                        Property="Background">
+                    <Setter.Value>
+                        <SolidColorBrush Color="Gray" />
+                    </Setter.Value>
+                </Setter>
+                <Setter TargetName="Border"
+                        Property="BorderBrush">
+                    <Setter.Value>
+                        <SolidColorBrush Color="Gray" />
+                    </Setter.Value>
+
+                </Setter>
+            </Trigger>
+            <Trigger Property="IsGrouping"
+                     Value="true">
+                <Setter Property="ScrollViewer.CanContentScroll"
+                        Value="false" />
+            </Trigger>
+            
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <DataTemplate x:Key="ListTemplate" DataType="local:ListBoxItemCustom">
+        <Border BorderBrush="Gray" BorderThickness="1" Background="White">
+            <Border.RenderTransform>
+                <RotateTransform Angle="{Binding Path=Angle}"></RotateTransform>
+            </Border.RenderTransform>
+            <Border.RenderTransformOrigin>
+                <Point X="1" Y="1"></Point>
+            </Border.RenderTransformOrigin>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="9*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Image Margin="5" MinWidth="150" MinHeight="150" Source="{Binding Path=ImageItem}" />
+                <Border Grid.Row="1" BorderThickness="1">
+                    <Border.Background>
+                        <LinearGradientBrush EndPoint="1,0" StartPoint="0,1">
+                            <GradientStop Color="#FF3E3E3E" Offset="0"/>
+                            <GradientStop Color="White" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <TextBlock x:Name="TextBlock" FontSize="16" Text="{Binding Path=Title}" HorizontalAlignment="Left" />
+                </Border>
+            </Grid>
+        </Border>
+        <DataTemplate.Triggers>
+            <Trigger Property="ListBoxItem.IsMouseOver" Value="True">
+                <Setter TargetName="TextBlock" Property="HorizontalAlignment" Value="Center"></Setter>
+            </Trigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+
+    <Style x:Key="{x:Type ListBoxItem}"
+         TargetType="ListBoxItem">
+        <Setter Property="SnapsToDevicePixels"
+            Value="true" />
+        <Setter Property="OverridesDefaultStyle"
+            Value="true" />
+        <Setter Property="Template" Value="{StaticResource ListBoxItem}"/>
+        <Setter Property="ContentTemplate" Value="{StaticResource ListTemplate}"></Setter>
+    </Style>
+
+    <Style TargetType="ListBox">
+        <Setter Property="Template"
+                Value="{StaticResource ListBoxGallery}" />
+        <!--<Setter Property="ItemTemplate" Value="{StaticResource ListTemplate}"/>-->
+        <Setter Property="SnapsToDevicePixels"
+                Value="true" />
+        <Setter Property="OverridesDefaultStyle"
+                Value="true" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility"
+                Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility"
+                Value="Auto" />
+        <Setter Property="ScrollViewer.CanContentScroll"
+                Value="true" />
+        <Setter Property="MinWidth"
+                Value="120" />
+        <Setter Property="MinHeight"
+                Value="95" />
+    </Style>
+    
+</ResourceDictionary>
